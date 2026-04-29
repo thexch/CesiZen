@@ -3,10 +3,9 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
-  // LA LIGNE MAGIQUE POUR AUTORISER LE FRONTEND VITE
+
   app.enableCors({
-    origin: 'http://localhost:5173', // Adresse de ton frontend
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
     credentials: true,
   });
 
