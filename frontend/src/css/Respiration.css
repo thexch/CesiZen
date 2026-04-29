@@ -123,14 +123,6 @@
   cursor: pointer;
 }
 
-.custom-error {
-  width: 100%;
-  margin: 0 0 24px;
-  color: #9f2d20;
-  font-weight: 700;
-  text-align: left;
-}
-
 .breathing-animation {
   display: grid;
   place-items: center;

@@ -1,41 +1,66 @@
-import { type FormEvent, useEffect, useMemo, useState } from 'react'
+import { type FormEvent, useEffect, useState } from 'react'
 import '../css/Respiration.css'
 
-type BreathingStep = {
-  label: string
-  instruction: string
-  duration: number
-  className: string
-}
-
-type BreathingRhythm = {
+type Rhythm = {
   id: string
   name: string
   description: string
-  steps: BreathingStep[]
-}
-
-type CustomDurations = {
   inhale: number
   hold: number
   exhale: number
 }
 
-function createBreathingSteps(durations: CustomDurations): BreathingStep[] {
-  const steps: BreathingStep[] = [
+const rhythms: Rhythm[] = [
+  {
+    id: '748',
+    name: 'Rythme 748',
+    description: 'Inspiration 7 s / Apnée 4 s / Expiration 8 s',
+    inhale: 7,
+    hold: 4,
+    exhale: 8,
+  },
+  {
+    id: '55',
+    name: 'Rythme 55',
+    description: 'Inspiration 5 s / Expiration 5 s',
+    inhale: 5,
+    hold: 0,
+    exhale: 5,
+  },
+  {
+    id: '46',
+    name: 'Rythme 46',
+    description: 'Inspiration 4 s / Expiration 6 s',
+    inhale: 4,
+    hold: 0,
+    exhale: 6,
+  },
+]
+
+const customRhythm: Rhythm = {
+  id: 'custom',
+  name: 'Rythme personnalisé',
+  description: 'Choisir ses propres durées',
+  inhale: 4,
+  hold: 0,
+  exhale: 6,
+}
+
+function getSteps(rhythm: Rhythm) {
+  const steps = [
     {
       label: 'Inspire',
       instruction: 'Inspirez lentement par le nez.',
-      duration: durations.inhale,
+      duration: rhythm.inhale,
       className: 'is-inhaling',
     },
   ]
 
-  if (durations.hold > 0) {
+  if (rhythm.hold > 0) {
     steps.push({
       label: 'Apnée',
       instruction: 'Gardez doucement votre souffle.',
-      duration: durations.hold,
+      duration: rhythm.hold,
       className: 'is-holding',
     })
   }
@@ -43,68 +68,50 @@ function createBreathingSteps(durations: CustomDurations): BreathingStep[] {
   steps.push({
     label: 'Expire',
     instruction: 'Expirez doucement par la bouche.',
-    duration: durations.exhale,
+    duration: rhythm.exhale,
     className: 'is-exhaling',
   })
 
   return steps
 }
 
-const breathingRhythms: BreathingRhythm[] = [
-  {
-    id: '748',
-    name: 'Rythme 748',
-    description: 'Inspiration 7 s / Apnée 4 s / Expiration 8 s',
-    steps: createBreathingSteps({ inhale: 7, hold: 4, exhale: 8 }),
-  },
-  {
-    id: '55',
-    name: 'Rythme 55',
-    description: 'Inspiration 5 s / Apnée 0 s / Expiration 5 s',
-    steps: createBreathingSteps({ inhale: 5, hold: 0, exhale: 5 }),
-  },
-  {
-    id: '46',
-    name: 'Rythme 46',
-    description: 'Inspiration 4 s / Apnée 0 s / Expiration 6 s',
-    steps: createBreathingSteps({ inhale: 4, hold: 0, exhale: 6 }),
-  },
-]
-
-const defaultCustomDurations = {
-  inhale: 4,
-  hold: 0,
-  exhale: 6,
-}
-
 function Respiration() {
-  const [selectedRhythmId, setSelectedRhythmId] = useState('46')
-  const [customDraft, setCustomDraft] = useState(defaultCustomDurations)
-  const [customDurations, setCustomDurations] = useState(defaultCustomDurations)
-  const [customError, setCustomError] = useState('')
+  const [selectedRhythm, setSelectedRhythm] = useState(rhythms[0])
   const [isRunning, setIsRunning] = useState(false)
   const [stepIndex, setStepIndex] = useState(0)
+  const [secondsLeft, setSecondsLeft] = useState(rhythms[0].inhale)
 
-  const selectedRhythm = useMemo(() => {
-    if (selectedRhythmId === 'custom') {
-      return {
-        id: 'custom',
-        name: 'Rythme personnalisé',
-        description: `Inspiration ${customDurations.inhale} s / Apnée ${customDurations.hold} s / Expiration ${customDurations.exhale} s`,
-        steps: createBreathingSteps(customDurations),
-      }
-    }
+  const steps = getSteps(selectedRhythm)
+  const currentStep = steps[stepIndex]
 
-    return (
-      breathingRhythms.find((rhythm) => rhythm.id === selectedRhythmId) ??
-      breathingRhythms[2]
-    )
-  }, [customDurations, selectedRhythmId])
+  function resetExercise(rhythm: Rhythm) {
+    setIsRunning(false)
+    setStepIndex(0)
+    setSecondsLeft(rhythm.inhale)
+  }
 
-  const breathingSteps = selectedRhythm.steps
-  const currentStep = breathingSteps[stepIndex]
+  function selectRhythm(rhythm: Rhythm) {
+    setSelectedRhythm(rhythm)
+    resetExercise(rhythm)
+  }
 
-  const [secondsLeft, setSecondsLeft] = useState(currentStep.duration)
+  function applyCustomRhythm(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    const formData = new FormData(event.currentTarget)
+    const inhale = Number(formData.get('inhale'))
+    const hold = Number(formData.get('hold'))
+    const exhale = Number(formData.get('exhale'))
+
+    selectRhythm({
+      id: 'custom',
+      name: 'Rythme personnalisé',
+      description: `Inspiration ${inhale} s / Apnée ${hold} s / Expiration ${exhale} s`,
+      inhale,
+      hold,
+      exhale,
+    })
+  }
 
   useEffect(() => {
     if (!isRunning) {
@@ -117,70 +124,13 @@ function Respiration() {
         return
       }
 
-      const nextStepIndex = (stepIndex + 1) % breathingSteps.length
+      const nextStepIndex = (stepIndex + 1) % getSteps(selectedRhythm).length
       setStepIndex(nextStepIndex)
-      setSecondsLeft(breathingSteps[nextStepIndex].duration)
+      setSecondsLeft(getSteps(selectedRhythm)[nextStepIndex].duration)
     }, 1000)
 
-    return () => {
-      window.clearTimeout(timer)
-    }
-  }, [breathingSteps, isRunning, secondsLeft, stepIndex])
-
-  function resetExercise(firstStepDuration: number) {
-    setIsRunning(false)
-    setStepIndex(0)
-    setSecondsLeft(firstStepDuration)
-  }
-
-  function handleSelectRhythm(rhythmId: string) {
-    const rhythm = breathingRhythms.find((item) => item.id === rhythmId)
-
-    if (!rhythm) {
-      return
-    }
-
-    setSelectedRhythmId(rhythm.id)
-    setCustomError('')
-    resetExercise(rhythm.steps[0].duration)
-  }
-
-  function handleSelectCustomRhythm() {
-    setSelectedRhythmId('custom')
-    setCustomError('')
-    resetExercise(customDurations.inhale)
-  }
-
-  function handleCustomChange(field: keyof CustomDurations, value: string) {
-    setCustomDraft({
-      ...customDraft,
-      [field]: Number(value),
-    })
-  }
-
-  function handleApplyCustom(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-
-    if (customDraft.inhale < 1 || customDraft.exhale < 1 || customDraft.hold < 0) {
-      setCustomError(
-        "L'inspiration et l'expiration doivent durer au moins 1 seconde.",
-      )
-      return
-    }
-
-    setCustomDurations(customDraft)
-    setSelectedRhythmId('custom')
-    setCustomError('')
-    resetExercise(customDraft.inhale)
-  }
-
-  function handleToggle() {
-    setIsRunning(!isRunning)
-  }
-
-  function handleReset() {
-    resetExercise(breathingSteps[0].duration)
-  }
+    return () => window.clearTimeout(timer)
+  }, [isRunning, secondsLeft, selectedRhythm, stepIndex])
 
   return (
     <main className="breathing-page">
@@ -195,72 +145,35 @@ function Respiration() {
 
       <section className="breathing-exercise">
         <div className="rhythm-selector" aria-label="Choix du rythme">
-          {breathingRhythms.map((rhythm) => (
+          {[...rhythms, customRhythm].map((rhythm) => (
             <button
               type="button"
-              className={rhythm.id === selectedRhythmId ? 'is-selected' : ''}
-              onClick={() => handleSelectRhythm(rhythm.id)}
+              className={rhythm.id === selectedRhythm.id ? 'is-selected' : ''}
+              onClick={() => selectRhythm(rhythm)}
               key={rhythm.id}
             >
               <span>{rhythm.name}</span>
               <small>{rhythm.description}</small>
             </button>
           ))}
-
-          <button
-            type="button"
-            className={selectedRhythmId === 'custom' ? 'is-selected' : ''}
-            onClick={handleSelectCustomRhythm}
-          >
-            <span>Rythme personnalisé</span>
-            <small>Choisir ses propres durées</small>
-          </button>
         </div>
 
-        {selectedRhythmId === 'custom' && (
-          <>
-            <form className="custom-rhythm" onSubmit={handleApplyCustom}>
-              <label>
-                Inspiration
-                <input
-                  type="number"
-                  min="1"
-                  value={customDraft.inhale}
-                  onChange={(event) =>
-                    handleCustomChange('inhale', event.target.value)
-                  }
-                />
-              </label>
-
-              <label>
-                Apnée
-                <input
-                  type="number"
-                  min="0"
-                  value={customDraft.hold}
-                  onChange={(event) =>
-                    handleCustomChange('hold', event.target.value)
-                  }
-                />
-              </label>
-
-              <label>
-                Expiration
-                <input
-                  type="number"
-                  min="1"
-                  value={customDraft.exhale}
-                  onChange={(event) =>
-                    handleCustomChange('exhale', event.target.value)
-                  }
-                />
-              </label>
-
-              <button type="submit">Appliquer</button>
-            </form>
-
-            {customError && <p className="custom-error">{customError}</p>}
-          </>
+        {selectedRhythm.id === 'custom' && (
+          <form className="custom-rhythm" onSubmit={applyCustomRhythm}>
+            <label>
+              Inspiration
+              <input type="number" name="inhale" min="1" defaultValue="4" />
+            </label>
+            <label>
+              Apnée
+              <input type="number" name="hold" min="0" defaultValue="0" />
+            </label>
+            <label>
+              Expiration
+              <input type="number" name="exhale" min="1" defaultValue="6" />
+            </label>
+            <button type="submit">Appliquer</button>
+          </form>
         )}
 
         <div
@@ -278,10 +191,10 @@ function Respiration() {
         </div>
 
         <div className="breathing-actions">
-          <button type="button" onClick={handleToggle}>
+          <button type="button" onClick={() => setIsRunning(!isRunning)}>
             {isRunning ? 'Mettre en pause' : 'Démarrer'}
           </button>
-          <button type="button" className="secondary-button" onClick={handleReset}>
+          <button type="button" className="secondary-button" onClick={() => resetExercise(selectedRhythm)}>
             Réinitialiser
           </button>
         </div>
