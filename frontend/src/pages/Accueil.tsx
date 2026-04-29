@@ -6,13 +6,13 @@ function Accueil() {
       <section className="hero-section">
         <div className="hero-content">
           <p className="hero-label">CESIZen</p>
-          <h1>Retrouver son calme, une respiration a la fois.</h1>
+          <h1>Retrouver son calme, une respiration à la fois.</h1>
           <p className="hero-text">
-            Une application de bien-etre pour aider les utilisateurs a mieux
-            comprendre leur stress et pratiquer un exercice de respiration guide.
+            Une application de bien-être pour aider les utilisateurs à mieux
+            comprendre leur stress et pratiquer un exercice de respiration guidée.
           </p>
-          <a className="primary-link" href="#breathing-preview">
-            Decouvrir l'exercice
+          <a className="primary-link" href="/respiration">
+            Découvrir les exercices
           </a>
         </div>
 
@@ -26,18 +26,18 @@ function Accueil() {
 
       <section className="intro-section">
         <article className="intro-card">
-          <h2>Evaluer</h2>
+          <h2>Évaluer</h2>
           <p>Identifier son niveau de stress avec un parcours simple.</p>
         </article>
 
         <article className="intro-card">
           <h2>Respirer</h2>
-          <p>Suivre un exercice guide pour ralentir le rythme.</p>
+          <p>Suivre un exercice guidé pour ralentir le rythme.</p>
         </article>
 
         <article className="intro-card">
           <h2>Suivre</h2>
-          <p>Garder une trace de ses pratiques et de son evolution.</p>
+          <p>Garder une trace de ses pratiques et de son évolution.</p>
         </article>
       </section>
     </main>
