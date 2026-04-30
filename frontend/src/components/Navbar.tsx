@@ -37,6 +37,7 @@ function Navbar() {
         <NavLink className="navbar-logo" to="/">
           <img src="/cesizen-logo.svg" alt="CESIZen" />
         </NavLink>
+        <p className="slogan">L'application de votre santé mentale</p>
 
         <button
           type="button"
