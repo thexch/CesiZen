@@ -1,4 +1,4 @@
-.admin-page {
+﻿.admin-page {
   min-height: calc(100vh - 73px);
   padding: 48px;
 }
@@ -9,14 +9,14 @@
 }
 
 .admin-label {
-  color: #2f7d6d;
+  color: var(--color-primary);
   font-weight: 700;
   text-transform: uppercase;
   margin: 0 0 12px;
 }
 
 .admin-header h1 {
-  color: #16211f;
+  color: var(--color-text);
   font-size: 42px;
   margin: 0;
 }
@@ -24,13 +24,22 @@
 .admin-message {
   max-width: 1000px;
   margin: 0 auto;
-  color: #52615d;
+  color: var(--color-muted);
   font-weight: 700;
 }
 
-.admin-table {
+.admin-section {
   max-width: 1000px;
-  margin: 0 auto;
+  margin: 0 auto 36px;
+}
+
+.admin-section h2 {
+  color: var(--color-text);
+  font-size: 28px;
+  margin: 0 0 18px;
+}
+
+.admin-table {
   overflow: hidden;
   border: 1px solid #d8e3df;
   border-radius: 8px;
@@ -40,11 +49,12 @@
 
 .admin-row {
   display: grid;
-  grid-template-columns: 1fr 1.5fr 0.7fr 0.8fr;
+  grid-template-columns: 1fr 1.5fr 0.7fr 0.4fr 1fr;
+  align-items: center;
   gap: 16px;
   padding: 16px 20px;
   border-bottom: 1px solid #d8e3df;
-  color: #52615d;
+  color: var(--color-muted);
 }
 
 .admin-row:last-child {
@@ -52,9 +62,118 @@
 }
 
 .admin-row-header {
-  background: #eef8f4;
-  color: #16211f;
+  background: var(--color-primary-soft);
+  color: var(--color-text);
   font-weight: 800;
+}
+
+.admin-field-title {
+  display: none;
+}
+
+.admin-field {
+  display: block;
+}
+
+.admin-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-checkbox input {
+  width: auto;
+}
+
+.admin-form {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 24px;
+  border: 1px solid #d8e3df;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.admin-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--color-muted);
+  font-weight: 700;
+}
+
+.admin-form input,
+.admin-form textarea,
+.admin-row select,
+.admin-information input,
+.admin-information textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d8e3df;
+  border-radius: 8px;
+  color: var(--color-text);
+  font: inherit;
+}
+
+.admin-form textarea,
+.admin-information textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.admin-form button,
+.admin-information button,
+.admin-row button {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-actions .danger-button {
+  background: #b42318;
+}
+
+.admin-information-list {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-information {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid #d8e3df;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.admin-information h3 {
+  color: var(--color-text);
+  margin: 0 0 8px;
+}
+
+.admin-information p {
+  color: var(--color-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.admin-empty {
+  color: var(--color-muted);
+  margin: 0;
 }
 
 @media (max-width: 760px) {
@@ -66,7 +185,65 @@
     font-size: 34px;
   }
 
+  .admin-table {
+    display: grid;
+    gap: 14px;
+    overflow: visible;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .admin-row-header {
+    display: none;
+  }
+
   .admin-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    border: 1px solid #d8e3df;
+    border-radius: 8px;
+    background: #ffffff;
+  }
+
+  .admin-field-title {
+    display: block;
+    color: var(--color-text);
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+
+  .admin-checkbox {
+    justify-content: space-between;
+  }
+
+  .admin-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .admin-page {
+    padding: 18px;
+  }
+
+  .admin-header h1 {
+    font-size: 30px;
+  }
+
+  .admin-form,
+  .admin-information,
+  .admin-row {
+    padding: 18px;
+  }
+
+  .admin-actions {
     grid-template-columns: 1fr;
   }
 }
+

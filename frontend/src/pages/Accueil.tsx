@@ -5,7 +5,8 @@ function Accueil() {
     <main className="home-page">
       <section className="hero-section">
         <div className="hero-content">
-          <p className="hero-label">CESIZen</p>
+          <img className="hero-logo" src="/cesizen-logo.svg" alt="CESIZen" />
+          <p className="hero-label">Bien-être et respiration</p>
           <h1>Retrouver son calme, une respiration à la fois.</h1>
           <p className="hero-text">
             Une application de bien-être pour aider les utilisateurs à mieux

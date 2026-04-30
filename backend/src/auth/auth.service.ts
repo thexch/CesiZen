@@ -14,6 +14,11 @@ type AuthBody = {
   name?: string;
 };
 
+type UpdateProfileBody = {
+  email: string;
+  name?: string;
+};
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -49,7 +54,11 @@ export class AuthService {
       where: { email: body.email },
     });
 
-    if (!user || !(await bcrypt.compare(body.password, user.password))) {
+    if (
+      !user ||
+      !user.isActive ||
+      !(await bcrypt.compare(body.password, user.password))
+    ) {
       throw new UnauthorizedException('Identifiants invalides.');
     }
 
@@ -72,14 +81,52 @@ export class AuthService {
 
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true, email: true, name: true, role: true },
+      select: { id: true, email: true, name: true, role: true, isActive: true },
     });
 
-    if (!user) {
+    if (!user || !user.isActive) {
       throw new UnauthorizedException('Utilisateur introuvable.');
     }
 
     return user;
+  }
+
+  async updateMe(authorization: string | undefined, body: UpdateProfileBody) {
+    const user = await this.getConnectedUser(authorization);
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email: body.email },
+    });
+
+    if (existingUser && existingUser.id !== user.id) {
+      throw new ConflictException('Cet email est déjà utilisé.');
+    }
+
+    return this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        email: body.email,
+        name: body.name,
+      },
+      select: { id: true, email: true, name: true, role: true, isActive: true },
+    });
+  }
+
+  async deleteMe(authorization: string | undefined, password: string) {
+    const userId = this.readToken(authorization);
+
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      throw new UnauthorizedException('Mot de passe incorrect.');
+    }
+
+    await this.prisma.user.delete({
+      where: { id: user.id },
+    });
+
+    return { message: 'Compte supprimé.' };
   }
 
   async requireAdmin(authorization?: string) {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
-import { getProfile } from '../api'
+import type { FormEvent } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { clearSession, deleteProfile, getProfile, updateProfile } from '../api'
 import '../css/Profil.css'
 
 type User = {
@@ -13,21 +13,49 @@ type User = {
 function Profil() {
   const navigate = useNavigate()
   const [user, setUser] = useState<User | null>(null)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [message, setMessage] = useState('Chargement...')
 
   useEffect(() => {
     getProfile()
       .then((data) => {
         setUser(data)
+        setName(data.name ?? '')
+        setEmail(data.email)
         setMessage('')
       })
       .catch(() => setMessage('Vous devez être connecté.'))
   }, [])
 
+  async function handleUpdate(event: FormEvent) {
+    event.preventDefault()
+
+    try {
+      const updatedUser = await updateProfile(email, name)
+      setUser(updatedUser)
+      localStorage.setItem('role', updatedUser.role)
+      setMessage('Profil modifié.')
+    } catch {
+      setMessage('Modification impossible.')
+    }
+  }
+
+  async function handleDelete(event: FormEvent) {
+    event.preventDefault()
+
+    try {
+      await deleteProfile(password)
+      clearSession()
+      navigate('/connexion')
+    } catch {
+      setMessage('Mot de passe incorrect.')
+    }
+  }
+
   function logout() {
-    localStorage.removeItem('token')
-    setUser(null)
-    setMessage('Vous êtes déconnecté.')
+    clearSession()
     navigate('/connexion')
   }
 
@@ -39,15 +67,49 @@ function Profil() {
         {user ? (
           <>
             <p>
-              <strong>Nom :</strong> {user.name ?? 'Non renseigné'}
-            </p>
-            <p>
-              <strong>Email :</strong> {user.email}
-            </p>
-            <p>
               <strong>Rôle :</strong> {user.role}
             </p>
+
+            <form className="profile-form" onSubmit={handleUpdate}>
+              <label>
+                Nom
+                <input
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                />
+              </label>
+
+              <label>
+                Email
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  required
+                />
+              </label>
+
+              <button type="submit">Modifier mes informations</button>
+            </form>
+
+            <form className="profile-form" onSubmit={handleDelete}>
+              <label>
+                Mot de passe
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  required
+                />
+              </label>
+
+              <button type="submit" className="danger-button">
+                Supprimer mon compte
+              </button>
+            </form>
+
             <button onClick={logout}>Se déconnecter</button>
+            {message && <p>{message}</p>}
           </>
         ) : (
           <>

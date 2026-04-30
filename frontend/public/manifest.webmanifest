@@ -1,0 +1,28 @@
+{
+  "name": "CESIZen",
+  "short_name": "CESIZen",
+  "description": "Application de bien-être avec exercice de respiration guidée.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f8fff9",
+  "theme_color": "#14bf6a",
+  "icons": [
+    {
+      "src": "/pwa-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa-icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

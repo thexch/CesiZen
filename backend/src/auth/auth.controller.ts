@@ -1,10 +1,19 @@
-import { Body, Controller, Get, Headers, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Headers, Post, Put } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 type AuthBody = {
   email: string;
   password: string;
   name?: string;
+};
+
+type UpdateProfileBody = {
+  email: string;
+  name?: string;
+};
+
+type DeleteProfileBody = {
+  password: string;
 };
 
 @Controller('auth')
@@ -24,5 +33,21 @@ export class AuthController {
   @Get('me')
   me(@Headers('authorization') authorization?: string) {
     return this.authService.me(authorization);
+  }
+
+  @Put('me')
+  updateMe(
+    @Headers('authorization') authorization: string | undefined,
+    @Body() body: UpdateProfileBody,
+  ) {
+    return this.authService.updateMe(authorization, body);
+  }
+
+  @Delete('me')
+  deleteMe(
+    @Headers('authorization') authorization: string | undefined,
+    @Body() body: DeleteProfileBody,
+  ) {
+    return this.authService.deleteMe(authorization, body.password);
   }
 }

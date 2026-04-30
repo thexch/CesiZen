@@ -1,4 +1,4 @@
-.profile-page {
+﻿.profile-page {
   display: grid;
   place-items: center;
   min-height: calc(100vh - 73px);
@@ -16,19 +16,42 @@
 }
 
 .profile-card h1 {
-  color: #16211f;
+  color: var(--color-text);
   font-size: 34px;
   margin: 0 0 24px;
 }
 
 .profile-card p {
-  color: #52615d;
+  color: var(--color-muted);
   line-height: 1.6;
   margin: 0 0 12px;
 }
 
 .profile-card strong {
-  color: #16211f;
+  color: var(--color-text);
+}
+
+.profile-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.profile-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--color-muted);
+  font-weight: 700;
+}
+
+.profile-form input {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #d8e3df;
+  border-radius: 8px;
+  color: var(--color-text);
+  font: inherit;
 }
 
 .profile-card a,
@@ -41,7 +64,7 @@
   padding: 0 18px;
   border: 0;
   border-radius: 8px;
-  background: #2f7d6d;
+  background: var(--color-primary);
   color: #ffffff;
   font: inherit;
   font-weight: 700;
@@ -49,12 +72,33 @@
   cursor: pointer;
 }
 
+.profile-card .danger-button {
+  background: #b42318;
+}
+
 @media (max-width: 640px) {
   .profile-page {
     padding: 24px;
+    place-items: start center;
   }
 
   .profile-card {
     padding: 24px;
   }
+
+  .profile-card a,
+  .profile-card button {
+    width: 100%;
+  }
 }
+
+@media (max-width: 380px) {
+  .profile-page {
+    padding: 18px;
+  }
+
+  .profile-card {
+    padding: 20px;
+  }
+}
+

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { login, register } from '../api'
+import { login, register, saveSession } from '../api'
 import '../css/Connexion.css'
 
 function Connexion() {
@@ -20,7 +20,7 @@ function Connexion() {
         ? await register(email, password, name)
         : await login(email, password)
 
-      localStorage.setItem('token', data.token)
+      saveSession(data.token, data.user)
       setMessage(isRegister ? 'Compte créé et connecté.' : 'Connexion réussie.')
       navigate('/profil')
     } catch {
