@@ -5,8 +5,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcryptjs';
 import { PrismaService } from '../prisma/prisma.service';
+import { hashPassword, isPasswordValid } from './password';
 
 type AuthBody = {
   email: string;
@@ -35,7 +35,7 @@ export class AuthService {
       throw new ConflictException('Cet email est déjà utilisé.');
     }
 
-    const hashedPassword = await bcrypt.hash(body.password, 10);
+    const hashedPassword = await hashPassword(body.password);
 
     const user = await this.prisma.user.create({
       data: {
@@ -57,7 +57,7 @@ export class AuthService {
     if (
       !user ||
       !user.isActive ||
-      !(await bcrypt.compare(body.password, user.password))
+      !(await isPasswordValid(body.password, user.password))
     ) {
       throw new UnauthorizedException('Identifiants invalides.');
     }
@@ -118,7 +118,7 @@ export class AuthService {
       where: { id: userId },
     });
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    if (!user || !(await isPasswordValid(password, user.password))) {
       throw new UnauthorizedException('Mot de passe incorrect.');
     }
 
