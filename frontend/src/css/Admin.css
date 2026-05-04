@@ -48,6 +48,8 @@
 }
 
 .admin-tabs button {
+  position: relative;
+  overflow: hidden;
   min-height: 36px;
   border: 0;
   border-radius: 6px;
@@ -57,9 +59,20 @@
   font-weight: 700;
 }
 
+.admin-tabs button > span:not(.admin-tab-background) {
+  position: relative;
+  z-index: 1;
+}
+
 .admin-tabs button.is-selected {
-  background: var(--color-primary);
   color: #ffffff;
+}
+
+.admin-tab-background {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  background: var(--color-primary);
 }
 
 .admin-section {
@@ -214,6 +227,11 @@
   margin-bottom: 16px;
 }
 
+.admin-form-wrapper {
+  position: relative;
+  margin-bottom: 16px;
+}
+
 .admin-form label {
   display: flex;
   flex-direction: column;
@@ -263,6 +281,55 @@
   font-weight: 700;
 }
 
+.admin-form-envelope {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid var(--color-primary);
+  border-radius: 8px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(233, 251, 241, 0.96));
+  box-shadow: 0 20px 42px rgba(20, 191, 106, 0.22);
+  pointer-events: none;
+  transform-origin: top right;
+}
+
+.admin-form-envelope::before,
+.admin-form-envelope::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-top: 2px solid rgba(20, 191, 106, 0.72);
+  transform-origin: center;
+}
+
+.admin-form-envelope::before {
+  transform: skewY(18deg);
+}
+
+.admin-form-envelope::after {
+  transform: skewY(-18deg);
+}
+
+.admin-form-envelope-title {
+  position: relative;
+  z-index: 1;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.admin-form button:disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
 .admin-form button:hover,
 .admin-information button:hover,
 .admin-row button:hover {
@@ -291,6 +358,12 @@
 .admin-information {
   display: grid;
   gap: 10px;
+}
+
+.admin-information.is-deleting {
+  border-color: rgba(180, 35, 24, 0.45);
+  background: #fff6f5;
+  box-shadow: 0 12px 28px rgba(180, 35, 24, 0.16);
 }
 
 .admin-empty {

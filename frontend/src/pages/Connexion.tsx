@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { login, register, saveSession } from '../api'
@@ -29,8 +30,20 @@ function Connexion() {
 
   return (
     <main className="login-page">
-      <form className="login-form" onSubmit={handleSubmit}>
-        <h1>{isRegister ? 'Inscription' : 'Connexion'}</h1>
+      <motion.form
+        className="login-form"
+        onSubmit={handleSubmit}
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+      >
+        <div className="login-header">
+          <span className="login-icon">{isRegister ? '+' : '✓'}</span>
+          <div>
+            <p>{isRegister ? 'Créer un accès' : 'Bienvenue'}</p>
+            <h1>{isRegister ? 'Inscription' : 'Connexion'}</h1>
+          </div>
+        </div>
 
         <div className="login-tabs">
           <button
@@ -38,23 +51,33 @@ function Connexion() {
             className={!isRegister ? 'is-selected' : ''}
             onClick={() => setIsRegister(false)}
           >
-            Connexion
+            {!isRegister && <motion.span className="login-tab-background" layoutId="login-tab" />}
+            <span>Connexion</span>
           </button>
+
           <button
             type="button"
             className={isRegister ? 'is-selected' : ''}
             onClick={() => setIsRegister(true)}
           >
-            Inscription
+            {isRegister && <motion.span className="login-tab-background" layoutId="login-tab" />}
+            <span>Inscription</span>
           </button>
         </div>
 
-        {isRegister && (
-          <label>
-            Nom
-            <input value={name} onChange={(event) => setName(event.target.value)} required />
-          </label>
-        )}
+        <AnimatePresence mode="wait">
+          {isRegister && (
+            <motion.label
+              key="name"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+            >
+              Nom
+              <input value={name} onChange={(event) => setName(event.target.value)} required />
+            </motion.label>
+          )}
+        </AnimatePresence>
 
         <label>
           Email
@@ -81,7 +104,7 @@ function Connexion() {
         </button>
 
         {message && <p className="login-message">{message}</p>}
-      </form>
+      </motion.form>
     </main>
   )
 }

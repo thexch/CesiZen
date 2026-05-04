@@ -1,0 +1,53 @@
+.custom-cursor {
+  display: none;
+}
+
+.custom-cursor-halo,
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+}
+
+.custom-cursor-halo {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(20, 191, 106, 0.45);
+  background:
+    radial-gradient(circle at 65% 35%, rgba(255, 216, 77, 0.65), transparent 18px),
+    radial-gradient(circle, rgba(20, 191, 106, 0.22), rgba(20, 191, 106, 0.05) 62%, transparent 70%);
+  box-shadow:
+    0 0 18px rgba(20, 191, 106, 0.24),
+    inset 0 0 16px rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(2px);
+}
+
+.custom-cursor-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--color-primary);
+  box-shadow: 0 0 10px rgba(20, 191, 106, 0.75);
+}
+
+@media (pointer: fine) {
+  body,
+  a,
+  button,
+  label,
+  [role='button'] {
+    cursor: none !important;
+  }
+
+  input,
+  textarea,
+  select {
+    cursor: auto;
+  }
+
+  .custom-cursor {
+    display: block;
+  }
+}

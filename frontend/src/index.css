@@ -53,6 +53,7 @@ span {
 button,
 a {
   font: inherit;
+  cursor: pointer;
 }
 
 button,

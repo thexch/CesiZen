@@ -1,9 +1,13 @@
 .home-page {
+  position: relative;
+  overflow: hidden;
   min-height: 100vh;
   padding: 26px 48px 36px;
 }
 
 .hero-section {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
   align-items: center;
@@ -97,6 +101,8 @@
 }
 
 .intro-section {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;

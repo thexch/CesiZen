@@ -1,0 +1,13 @@
+.zen-flow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.zen-flow svg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.24;
+}
