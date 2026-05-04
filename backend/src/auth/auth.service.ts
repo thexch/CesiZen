@@ -19,6 +19,13 @@ type UpdateProfileBody = {
   name?: string;
 };
 
+const publicUserSelect = {
+  id: true,
+  email: true,
+  name: true,
+  role: true,
+} as const;
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -35,15 +42,13 @@ export class AuthService {
       throw new ConflictException('Cet email est déjà utilisé.');
     }
 
-    const hashedPassword = await hashPassword(body.password);
-
     const user = await this.prisma.user.create({
       data: {
         email: body.email,
         name: body.name,
-        password: hashedPassword,
+        password: await hashPassword(body.password),
       },
-      select: { id: true, email: true, name: true, role: true },
+      select: publicUserSelect,
     });
 
     return { user, token: this.createToken(user.id) };
@@ -62,26 +67,21 @@ export class AuthService {
       throw new UnauthorizedException('Identifiants invalides.');
     }
 
-    const safeUser = {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      role: user.role,
+    return {
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      },
+      token: this.createToken(user.id),
     };
-
-    return { user: safeUser, token: this.createToken(user.id) };
-  }
-
-  async me(authorization?: string) {
-    return this.getConnectedUser(authorization);
   }
 
   async getConnectedUser(authorization?: string) {
-    const userId = this.readToken(authorization);
-
     const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-      select: { id: true, email: true, name: true, role: true, isActive: true },
+      where: { id: this.readToken(authorization) },
+      select: { ...publicUserSelect, isActive: true },
     });
 
     if (!user || !user.isActive) {
@@ -103,28 +103,21 @@ export class AuthService {
 
     return this.prisma.user.update({
       where: { id: user.id },
-      data: {
-        email: body.email,
-        name: body.name,
-      },
-      select: { id: true, email: true, name: true, role: true, isActive: true },
+      data: { email: body.email, name: body.name },
+      select: { ...publicUserSelect, isActive: true },
     });
   }
 
   async deleteMe(authorization: string | undefined, password: string) {
-    const userId = this.readToken(authorization);
-
     const user = await this.prisma.user.findUnique({
-      where: { id: userId },
+      where: { id: this.readToken(authorization) },
     });
 
     if (!user || !(await isPasswordValid(password, user.password))) {
       throw new UnauthorizedException('Mot de passe incorrect.');
     }
 
-    await this.prisma.user.delete({
-      where: { id: user.id },
-    });
+    await this.prisma.user.delete({ where: { id: user.id } });
 
     return { message: 'Compte supprimé.' };
   }

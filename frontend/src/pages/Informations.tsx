@@ -11,6 +11,11 @@ type Information = {
 function Informations() {
   const [informations, setInformations] = useState<Information[]>([])
   const [message, setMessage] = useState('Chargement...')
+  const [selectedInformation, setSelectedInformation] = useState<Information | null>(null)
+
+  function getPreview(content: string) {
+    return content.length <= 150 ? content : `${content.slice(0, 150)}...`
+  }
 
   useEffect(() => {
     getInformations()
@@ -40,11 +45,30 @@ function Informations() {
             informations.map((information) => (
               <article className="information-card" key={information.id}>
                 <h2>{information.title}</h2>
-                <p>{information.content}</p>
+                <p>{getPreview(information.content)}</p>
+                <button type="button" onClick={() => setSelectedInformation(information)}>
+                  Lire l'article
+                </button>
               </article>
             ))
           )}
         </section>
+      )}
+
+      {selectedInformation && (
+        <div className="information-modal">
+          <article className="information-modal-content">
+            <button
+              type="button"
+              className="information-modal-close"
+              onClick={() => setSelectedInformation(null)}
+            >
+              Fermer
+            </button>
+            <h2>{selectedInformation.title}</h2>
+            <p>{selectedInformation.content}</p>
+          </article>
+        </div>
       )}
     </main>
   )

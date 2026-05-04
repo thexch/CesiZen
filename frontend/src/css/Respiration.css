@@ -1,71 +1,74 @@
-﻿.breathing-page {
+.breathing-page {
   min-height: calc(100vh - 73px);
-  padding: 48px;
+  padding: 28px 32px 44px;
 }
 
 .breathing-header {
   max-width: 760px;
-  margin: 0 auto 40px;
+  margin: 0 auto 22px;
   text-align: center;
 }
 
 .breathing-label {
   color: var(--color-primary);
+  font-size: 14px;
   font-weight: 700;
+  margin: 0 0 12px;
   text-transform: uppercase;
-  margin: 0 0 16px;
 }
 
 .breathing-header h1 {
   color: var(--color-text);
-  font-size: 48px;
+  font-size: 46px;
   line-height: 1.1;
   margin: 0;
 }
 
 .breathing-header p {
   color: var(--color-muted);
-  font-size: 19px;
+  font-size: 18px;
   line-height: 1.6;
-  margin: 20px 0 0;
+  max-width: 620px;
+  margin: 18px auto 0;
 }
 
 .breathing-exercise {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 680px;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 40px;
-  border: 1px solid #d8e3df;
+  padding: 24px;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
-  background: #ffffff;
-  box-shadow: 0 20px 50px rgba(33, 56, 51, 0.12);
+  background: var(--color-card);
+  box-shadow: var(--shadow-card);
   text-align: center;
 }
 
 .rhythm-selector {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
   width: 100%;
-  margin-bottom: 36px;
+  margin-bottom: 24px;
 }
 
 .rhythm-selector button {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  min-height: 92px;
-  padding: 16px;
-  border: 1px solid #d8e3df;
+  gap: 8px;
+  min-height: 74px;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
-  background: #ffffff;
+  background: var(--color-card);
   color: var(--color-muted);
-  text-align: left;
   cursor: pointer;
+  text-align: left;
 }
 
+.rhythm-selector button:hover,
 .rhythm-selector button.is-selected {
   border-color: var(--color-primary);
   background: var(--color-primary-soft);
@@ -73,21 +76,22 @@
 
 .rhythm-selector span {
   color: var(--color-text);
-  font-weight: 800;
+  font-size: 17px;
+  font-weight: 700;
 }
 
 .rhythm-selector small {
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .custom-rhythm {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   width: 100%;
-  margin-bottom: 28px;
-  padding: 18px;
-  border: 1px solid #d8e3df;
+  margin-bottom: 24px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   background: var(--color-background);
 }
@@ -104,56 +108,64 @@
 
 .custom-rhythm input {
   width: 100%;
-  min-height: 44px;
+  min-height: 40px;
   padding: 0 12px;
-  border: 1px solid #d8e3df;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   color: var(--color-text);
   font: inherit;
 }
 
+.custom-rhythm input:focus {
+  border-color: var(--color-primary);
+}
+
 .custom-rhythm button {
   align-self: end;
-  min-height: 44px;
+  min-height: 40px;
   border: 0;
   border-radius: 8px;
   background: var(--color-primary);
   color: #ffffff;
-  font-weight: 700;
   cursor: pointer;
+  font-weight: 700;
 }
 
 .breathing-animation {
   display: grid;
   place-items: center;
-  width: 220px;
-  height: 220px;
+  width: 210px;
+  height: 210px;
+  margin-top: 10px;
+  border: 14px solid var(--color-primary-soft);
   border-radius: 50%;
   background: var(--color-primary-light);
   color: var(--color-primary-dark);
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 800;
   transform: scale(0.82);
   transition-property: transform;
   transition-timing-function: ease-in-out;
 }
 
-.breathing-animation.is-inhaling {
-  transform: scale(1);
-}
-
+.breathing-animation.is-inhaling,
 .breathing-animation.is-holding {
   transform: scale(1);
 }
 
 .breathing-animation.is-exhaling {
-  transform: scale(0.72);
+  transform: scale(0.74);
+}
+
+.breathing-status {
+  min-height: 92px;
 }
 
 .breathing-status h2 {
   color: var(--color-text);
-  font-size: 26px;
-  margin: 32px 0 8px;
+  font-size: 25px;
+  line-height: 1.25;
+  margin: 28px 0 8px;
 }
 
 .breathing-status p {
@@ -164,43 +176,54 @@
 .breathing-actions {
   display: flex;
   gap: 12px;
-  margin-top: 28px;
+  margin-top: 12px;
 }
 
 .breathing-actions button {
-  min-height: 48px;
-  padding: 0 20px;
+  min-height: 40px;
+  padding: 0 18px;
   border: 0;
   border-radius: 8px;
   background: var(--color-primary);
   color: #ffffff;
-  font-weight: 700;
   cursor: pointer;
+  font-weight: 700;
+}
+
+.breathing-actions button:hover,
+.custom-rhythm button:hover {
+  background: var(--color-primary-dark);
 }
 
 .breathing-actions .secondary-button {
-  border: 1px solid #d8e3df;
-  background: #ffffff;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
   color: var(--color-muted);
 }
 
-@media (max-width: 640px) {
+.breathing-actions .secondary-button:hover {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+}
+
+@media (max-width: 700px) {
   .breathing-page {
-    padding: 24px;
+    padding: 28px 18px;
   }
 
   .breathing-header h1 {
-    font-size: 38px;
+    font-size: 36px;
+  }
+
+  .breathing-header p {
+    font-size: 16px;
   }
 
   .breathing-exercise {
-    padding: 28px 20px;
+    padding: 22px 16px;
   }
 
-  .rhythm-selector {
-    grid-template-columns: 1fr;
-  }
-
+  .rhythm-selector,
   .custom-rhythm {
     grid-template-columns: 1fr;
   }
@@ -216,29 +239,18 @@
 }
 
 @media (max-width: 420px) {
-  .breathing-page {
-    padding: 18px;
-  }
-
   .breathing-header h1 {
-    font-size: 32px;
-  }
-
-  .breathing-header p {
-    font-size: 16px;
-  }
-
-  .breathing-exercise {
-    padding: 22px 16px;
+    font-size: 31px;
   }
 
   .breathing-animation {
     width: 170px;
     height: 170px;
+    border-width: 10px;
+    font-size: 22px;
   }
 
   .breathing-status h2 {
-    font-size: 22px;
+    font-size: 21px;
   }
 }
-

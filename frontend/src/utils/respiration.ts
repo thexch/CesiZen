@@ -11,7 +11,7 @@ export const rhythms: Rhythm[] = [
   {
     id: '748',
     name: 'Rythme 748',
-    description: 'Inspiration 7 s / Apnée 4 s / Expiration 8 s',
+    description: '7 s inspiration / 4 s apnée / 8 s expiration',
     inhale: 7,
     hold: 4,
     exhale: 8,
@@ -19,7 +19,7 @@ export const rhythms: Rhythm[] = [
   {
     id: '55',
     name: 'Rythme 55',
-    description: 'Inspiration 5 s / Expiration 5 s',
+    description: '5 s inspiration / 5 s expiration',
     inhale: 5,
     hold: 0,
     exhale: 5,
@@ -27,7 +27,7 @@ export const rhythms: Rhythm[] = [
   {
     id: '46',
     name: 'Rythme 46',
-    description: 'Inspiration 4 s / Expiration 6 s',
+    description: '4 s inspiration / 6 s expiration',
     inhale: 4,
     hold: 0,
     exhale: 6,

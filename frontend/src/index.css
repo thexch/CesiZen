@@ -10,6 +10,11 @@
   --color-text: #14241b;
   --color-muted: #52645b;
   --color-background: #f8fff9;
+  --color-card: #ffffff;
+  --color-border: #d8e3df;
+  --color-danger: #b42318;
+  --shadow-card: 0 10px 26px rgba(20, 36, 27, 0.07);
+  --shadow-soft: 0 4px 14px rgba(20, 36, 27, 0.05);
 }
 
 * {
@@ -22,6 +27,7 @@ html {
 
 body {
   margin: 0;
+  background: var(--color-background);
 }
 
 input,
@@ -47,4 +53,25 @@ span {
 button,
 a {
   font: inherit;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid rgba(20, 191, 106, 0.25);
+  outline-offset: 2px;
 }

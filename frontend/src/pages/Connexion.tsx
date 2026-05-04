@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import type { FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { login, register, saveSession } from '../api'
 import '../css/Connexion.css'
@@ -53,12 +52,7 @@ function Connexion() {
         {isRegister && (
           <label>
             Nom
-            <input
-              type="text"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              required
-            />
+            <input value={name} onChange={(event) => setName(event.target.value)} required />
           </label>
         )}
 

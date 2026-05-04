@@ -21,6 +21,15 @@ type UserBody = {
   isActive: boolean;
 };
 
+const adminUserSelect = {
+  id: true,
+  email: true,
+  name: true,
+  role: true,
+  isActive: true,
+  createdAt: true,
+} as const;
+
 @Controller('admin')
 export class AdminController {
   constructor(
@@ -33,14 +42,7 @@ export class AdminController {
     await this.authService.requireAdmin(authorization);
 
     return this.prisma.user.findMany({
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        role: true,
-        isActive: true,
-        createdAt: true,
-      },
+      select: adminUserSelect,
       orderBy: { createdAt: 'desc' },
     });
   }
@@ -55,11 +57,8 @@ export class AdminController {
 
     return this.prisma.user.update({
       where: { id: Number(id) },
-      data: {
-        role: body.role,
-        isActive: body.isActive,
-      },
-      select: { id: true, email: true, name: true, role: true, isActive: true },
+      data: { role: body.role, isActive: body.isActive },
+      select: adminUserSelect,
     });
   }
 
@@ -69,10 +68,7 @@ export class AdminController {
     @Param('id') id: string,
   ) {
     await this.authService.requireAdmin(authorization);
-
-    await this.prisma.user.delete({
-      where: { id: Number(id) },
-    });
+    await this.prisma.user.delete({ where: { id: Number(id) } });
 
     return { message: 'Utilisateur supprimé.' };
   }
@@ -85,10 +81,7 @@ export class AdminController {
     await this.authService.requireAdmin(authorization);
 
     return this.prisma.information.create({
-      data: {
-        title: body.title,
-        content: body.content,
-      },
+      data: { title: body.title, content: body.content },
     });
   }
 
@@ -102,10 +95,7 @@ export class AdminController {
 
     return this.prisma.information.update({
       where: { id: Number(id) },
-      data: {
-        title: body.title,
-        content: body.content,
-      },
+      data: { title: body.title, content: body.content },
     });
   }
 

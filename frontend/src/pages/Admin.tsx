@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import type { FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import {
   createInformation,
   deleteAdminUser,
@@ -17,7 +16,6 @@ type User = {
   name: string | null
   role: string
   isActive: boolean
-  createdAt: string
 }
 
 type Information = {
@@ -27,6 +25,7 @@ type Information = {
 }
 
 function Admin() {
+  const [activeTab, setActiveTab] = useState<'users' | 'informations'>('users')
   const [users, setUsers] = useState<User[]>([])
   const [informations, setInformations] = useState<Information[]>([])
   const [title, setTitle] = useState('')
@@ -37,10 +36,17 @@ function Admin() {
     loadAdminPage()
   }, [])
 
+  async function refreshUsers() {
+    setUsers(await getAdminUsers())
+  }
+
+  async function refreshInformations() {
+    setInformations(await getInformations())
+  }
+
   async function loadAdminPage() {
     try {
-      setUsers(await getAdminUsers())
-      setInformations(await getInformations())
+      await Promise.all([refreshUsers(), refreshInformations()])
       setMessage('')
     } catch {
       setMessage('Accès réservé aux administrateurs.')
@@ -53,13 +59,10 @@ function Admin() {
     await createInformation(title, content)
     setTitle('')
     setContent('')
-    setInformations(await getInformations())
+    await refreshInformations()
   }
 
-  async function handleUpdateInformation(
-    event: FormEvent<HTMLFormElement>,
-    id: number,
-  ) {
+  async function handleUpdateInformation(event: FormEvent<HTMLFormElement>, id: number) {
     event.preventDefault()
 
     const formData = new FormData(event.currentTarget)
@@ -68,12 +71,7 @@ function Admin() {
       String(formData.get('title')),
       String(formData.get('content')),
     )
-    setInformations(await getInformations())
-  }
-
-  async function handleDeleteInformation(id: number) {
-    await deleteInformation(id)
-    setInformations(await getInformations())
+    await refreshInformations()
   }
 
   async function handleUpdateUser(event: FormEvent<HTMLFormElement>, id: number) {
@@ -85,12 +83,7 @@ function Admin() {
       String(formData.get('role')),
       formData.get('isActive') === 'on',
     )
-    setUsers(await getAdminUsers())
-  }
-
-  async function handleDeleteUser(id: number) {
-    await deleteAdminUser(id)
-    setUsers(await getAdminUsers())
+    await refreshUsers()
   }
 
   return (
@@ -104,124 +97,135 @@ function Admin() {
         <p className="admin-message">{message}</p>
       ) : (
         <>
-          <section className="admin-section">
-            <h2>Utilisateurs</h2>
+          <div className="admin-tabs">
+            <button
+              type="button"
+              className={activeTab === 'users' ? 'is-selected' : ''}
+              onClick={() => setActiveTab('users')}
+            >
+              Utilisateurs
+            </button>
+            <button
+              type="button"
+              className={activeTab === 'informations' ? 'is-selected' : ''}
+              onClick={() => setActiveTab('informations')}
+            >
+              Informations
+            </button>
+          </div>
 
-            <div className="admin-table">
-              <div className="admin-row admin-row-header">
-                <span>Nom</span>
-                <span>Email</span>
-                <span>Rôle</span>
-                <span>Actif</span>
-                <span>Actions</span>
-              </div>
+          {activeTab === 'users' && (
+            <section className="admin-section">
+              <h2>Utilisateurs</h2>
 
-              {users.map((user) => (
-                <form
-                  className="admin-row"
-                  key={user.id}
-                  onSubmit={(event) => handleUpdateUser(event, user.id)}
-                >
-                  <span>
-                    <span className="admin-field-title">Nom</span>
-                    {user.name ?? 'Non renseigné'}
-                  </span>
-                  <span>
-                    <span className="admin-field-title">Email</span>
-                    {user.email}
-                  </span>
-                  <label className="admin-field">
-                    <span className="admin-field-title">Rôle</span>
-                    <select name="role" defaultValue={user.role}>
-                      <option value="USER">USER</option>
-                      <option value="ADMIN">ADMIN</option>
-                    </select>
-                  </label>
-                  <label className="admin-field admin-checkbox">
-                    <span className="admin-field-title">Actif</span>
-                    <input
-                      type="checkbox"
-                      name="isActive"
-                      defaultChecked={user.isActive}
-                    />
-                  </label>
-                  <span className="admin-actions">
-                    <button type="submit">Enregistrer</button>
-                    <button
-                      type="button"
-                      className="danger-button"
-                      onClick={() => handleDeleteUser(user.id)}
-                    >
-                      Supprimer
-                    </button>
-                  </span>
-                </form>
-              ))}
-            </div>
-          </section>
+              <div className="admin-table">
+                <div className="admin-row admin-row-header">
+                  <span>Utilisateur</span>
+                  <span>Rôle</span>
+                  <span>Statut</span>
+                  <span>Actions</span>
+                </div>
 
-          <section className="admin-section">
-            <h2>Informations</h2>
-
-            <form className="admin-form" onSubmit={handleCreateInformation}>
-              <label>
-                Titre
-                <input
-                  value={title}
-                  onChange={(event) => setTitle(event.target.value)}
-                  required
-                />
-              </label>
-
-              <label>
-                Contenu
-                <textarea
-                  value={content}
-                  onChange={(event) => setContent(event.target.value)}
-                  required
-                />
-              </label>
-
-              <button type="submit">Ajouter</button>
-            </form>
-
-            <div className="admin-information-list">
-              {informations.length === 0 ? (
-                <p className="admin-empty">Aucune information publiée.</p>
-              ) : (
-                informations.map((information) => (
+                {users.map((user) => (
                   <form
-                    className="admin-information"
-                    key={information.id}
-                    onSubmit={(event) =>
-                      handleUpdateInformation(event, information.id)
-                    }
+                    className="admin-row"
+                    key={user.id}
+                    onSubmit={(event) => handleUpdateUser(event, user.id)}
                   >
-                    <input
-                      name="title"
-                      defaultValue={information.title}
-                      required
-                    />
-                    <textarea
-                      name="content"
-                      defaultValue={information.content}
-                      required
-                    />
-                    <div className="admin-actions">
-                      <button type="submit">Modifier</button>
+                    <span className="admin-user">
+                      <span className="admin-avatar">
+                        {(user.name ?? user.email).charAt(0).toUpperCase()}
+                      </span>
+                      <span>
+                        <span className="admin-field-title">Utilisateur</span>
+                        <strong>{user.name ?? 'Non renseigné'}</strong>
+                        <small>{user.email}</small>
+                      </span>
+                    </span>
+
+                    <label className="admin-field admin-role-field">
+                      <span className="admin-field-title">Rôle</span>
+                      <select name="role" defaultValue={user.role}>
+                        <option value="USER">Utilisateur</option>
+                        <option value="ADMIN">Administrateur</option>
+                      </select>
+                    </label>
+
+                    <label className="admin-switch">
+                      <span className="admin-field-title">Statut</span>
+                      <input type="checkbox" name="isActive" defaultChecked={user.isActive} />
+                      <span className="admin-switch-track"></span>
+                      <span className="admin-switch-text">Compte actif</span>
+                    </label>
+
+                    <span className="admin-actions">
+                      <button type="submit">Enregistrer</button>
                       <button
                         type="button"
                         className="danger-button"
-                        onClick={() => handleDeleteInformation(information.id)}
+                        onClick={async () => {
+                          await deleteAdminUser(user.id)
+                          await refreshUsers()
+                        }}
                       >
                         Supprimer
                       </button>
-                    </div>
+                    </span>
                   </form>
-                ))
-              )}
-            </div>
-          </section>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {activeTab === 'informations' && (
+            <section className="admin-section">
+              <h2>Informations</h2>
+
+              <form className="admin-form" onSubmit={handleCreateInformation}>
+                <label>
+                  Titre
+                  <input value={title} onChange={(event) => setTitle(event.target.value)} required />
+                </label>
+
+                <label>
+                  Contenu
+                  <textarea value={content} onChange={(event) => setContent(event.target.value)} required />
+                </label>
+
+                <button type="submit">Ajouter</button>
+              </form>
+
+              <div className="admin-information-list">
+                {informations.length === 0 ? (
+                  <p className="admin-empty">Aucune information publiée.</p>
+                ) : (
+                  informations.map((information) => (
+                    <form
+                      className="admin-information"
+                      key={information.id}
+                      onSubmit={(event) => handleUpdateInformation(event, information.id)}
+                    >
+                      <input name="title" defaultValue={information.title} required />
+                      <textarea name="content" defaultValue={information.content} required />
+                      <div className="admin-actions">
+                        <button type="submit">Modifier</button>
+                        <button
+                          type="button"
+                          className="danger-button"
+                          onClick={async () => {
+                            await deleteInformation(information.id)
+                            await refreshInformations()
+                          }}
+                        >
+                          Supprimer
+                        </button>
+                      </div>
+                    </form>
+                  ))
+                )}
+              </div>
+            </section>
+          )}
         </>
       )}
     </main>

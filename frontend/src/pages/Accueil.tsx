@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import '../css/Accueil.css'
 
 function Accueil() {
@@ -12,9 +13,9 @@ function Accueil() {
             Une application de bien-être pour aider les utilisateurs à mieux
             comprendre leur stress et pratiquer un exercice de respiration guidée.
           </p>
-          <a className="primary-link" href="/respiration">
+          <Link className="primary-link" to="/respiration">
             Découvrir les exercices
-          </a>
+          </Link>
         </div>
 
         <div className="breathing-card" id="breathing-preview">

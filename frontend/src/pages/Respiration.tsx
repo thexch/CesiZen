@@ -65,8 +65,8 @@ function Respiration() {
         <p className="breathing-label">Exercice</p>
         <h1>Respiration guidée</h1>
         <p>
-          Suivez le rythme affiché à l'écran pour ralentir votre respiration et
-          retrouver progressivement votre calme.
+          Choisissez un rythme, lancez l'exercice, puis suivez simplement les
+          indications affichées à l'écran.
         </p>
       </section>
 

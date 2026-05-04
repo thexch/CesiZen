@@ -5,30 +5,31 @@ import '../css/Navbar.css'
 
 function Navbar() {
   const location = useLocation()
-  const [isConnected, setIsConnected] = useState(false)
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [isConnected, setIsConnected] = useState(Boolean(localStorage.getItem('token')))
+  const [isAdmin, setIsAdmin] = useState(localStorage.getItem('role') === 'ADMIN')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem('token')
-    const role = localStorage.getItem('role')
 
     setIsMenuOpen(false)
     setIsConnected(Boolean(token))
-    setIsAdmin(role === 'ADMIN')
+    setIsAdmin(localStorage.getItem('role') === 'ADMIN')
 
-    if (token) {
-      getProfile()
-        .then((user) => {
-          localStorage.setItem('role', user.role)
-          setIsAdmin(user.role === 'ADMIN')
-        })
-        .catch(() => {
-          clearSession()
-          setIsConnected(false)
-          setIsAdmin(false)
-        })
+    if (!token) {
+      return
     }
+
+    getProfile()
+      .then((user) => {
+        localStorage.setItem('role', user.role)
+        setIsAdmin(user.role === 'ADMIN')
+      })
+      .catch(() => {
+        clearSession()
+        setIsConnected(false)
+        setIsAdmin(false)
+      })
   }, [location])
 
   return (

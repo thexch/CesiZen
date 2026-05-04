@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import type { FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { clearSession, deleteProfile, getProfile, updateProfile } from '../api'
 import '../css/Profil.css'
@@ -47,8 +46,7 @@ function Profil() {
 
     try {
       await deleteProfile(password)
-      clearSession()
-      navigate('/connexion')
+      logout()
     } catch {
       setMessage('Mot de passe incorrect.')
     }
@@ -73,10 +71,7 @@ function Profil() {
             <form className="profile-form" onSubmit={handleUpdate}>
               <label>
                 Nom
-                <input
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                />
+                <input value={name} onChange={(event) => setName(event.target.value)} />
               </label>
 
               <label>

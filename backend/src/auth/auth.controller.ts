@@ -32,7 +32,7 @@ export class AuthController {
 
   @Get('me')
   me(@Headers('authorization') authorization?: string) {
-    return this.authService.me(authorization);
+    return this.authService.getConnectedUser(authorization);
   }
 
   @Put('me')

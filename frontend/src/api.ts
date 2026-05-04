@@ -4,6 +4,25 @@ type User = {
   role: string
 }
 
+function getToken() {
+  return localStorage.getItem('token')
+}
+
+function authHeaders() {
+  return { Authorization: `Bearer ${getToken()}` }
+}
+
+async function request(path: string, options: RequestInit, errorMessage: string) {
+  const response = await fetch(`${API_URL}${path}`, options)
+
+  if (!response.ok) {
+    throw new Error(errorMessage)
+  }
+
+  const text = await response.text()
+  return text ? JSON.parse(text) : null
+}
+
 export function saveSession(token: string, user: User) {
   localStorage.setItem('token', token)
   localStorage.setItem('role', user.role)
@@ -14,203 +33,134 @@ export function clearSession() {
   localStorage.removeItem('role')
 }
 
-export async function login(email: string, password: string) {
-  const response = await fetch(`${API_URL}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-  })
-
-  if (!response.ok) {
-    throw new Error('Email ou mot de passe incorrect.')
-  }
-
-  return response.json()
+export function login(email: string, password: string) {
+  return request(
+    '/auth/login',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    },
+    'Email ou mot de passe incorrect.',
+  )
 }
 
-export async function register(email: string, password: string, name: string) {
-  const response = await fetch(`${API_URL}/auth/register`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password, name }),
-  })
-
-  if (!response.ok) {
-    throw new Error("Impossible de créer le compte.")
-  }
-
-  return response.json()
+export function register(email: string, password: string, name: string) {
+  return request(
+    '/auth/register',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, name }),
+    },
+    'Impossible de créer le compte.',
+  )
 }
 
 export async function getProfile() {
-  const token = localStorage.getItem('token')
-
-  if (!token) {
+  if (!getToken()) {
     throw new Error('Vous devez être connecté.')
   }
 
-  const response = await fetch(`${API_URL}/auth/me`, {
-    headers: { Authorization: `Bearer ${token}` },
-  })
-
-  if (!response.ok) {
-    throw new Error('Session invalide.')
-  }
-
-  return response.json()
+  return request(
+    '/auth/me',
+    { headers: authHeaders() },
+    'Session invalide.',
+  )
 }
 
-export async function updateProfile(email: string, name: string) {
-  const token = localStorage.getItem('token')
-
-  const response = await fetch(`${API_URL}/auth/me`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+export function updateProfile(email: string, name: string) {
+  return request(
+    '/auth/me',
+    {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify({ email, name }),
     },
-    body: JSON.stringify({ email, name }),
-  })
-
-  if (!response.ok) {
-    throw new Error('Impossible de modifier le profil.')
-  }
-
-  return response.json()
+    'Impossible de modifier le profil.',
+  )
 }
 
-export async function deleteProfile(password: string) {
-  const token = localStorage.getItem('token')
-
-  const response = await fetch(`${API_URL}/auth/me`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+export function deleteProfile(password: string) {
+  return request(
+    '/auth/me',
+    {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify({ password }),
     },
-    body: JSON.stringify({ password }),
-  })
-
-  if (!response.ok) {
-    throw new Error('Mot de passe incorrect.')
-  }
+    'Mot de passe incorrect.',
+  )
 }
 
 export async function getAdminUsers() {
-  const token = localStorage.getItem('token')
-
-  if (!token) {
+  if (!getToken()) {
     throw new Error('Vous devez être connecté.')
   }
 
-  const response = await fetch(`${API_URL}/admin/users`, {
-    headers: { Authorization: `Bearer ${token}` },
-  })
-
-  if (!response.ok) {
-    throw new Error('Accès refusé.')
-  }
-
-  return response.json()
+  return request(
+    '/admin/users',
+    { headers: authHeaders() },
+    'Accès refusé.',
+  )
 }
 
-export async function updateAdminUser(
-  id: number,
-  role: string,
-  isActive: boolean,
-) {
-  const token = localStorage.getItem('token')
-
-  const response = await fetch(`${API_URL}/admin/users/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+export function updateAdminUser(id: number, role: string, isActive: boolean) {
+  return request(
+    `/admin/users/${id}`,
+    {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify({ role, isActive }),
     },
-    body: JSON.stringify({ role, isActive }),
-  })
-
-  if (!response.ok) {
-    throw new Error("Impossible de modifier l'utilisateur.")
-  }
-
-  return response.json()
+    "Impossible de modifier l'utilisateur.",
+  )
 }
 
-export async function deleteAdminUser(id: number) {
-  const token = localStorage.getItem('token')
-
-  const response = await fetch(`${API_URL}/admin/users/${id}`, {
-    method: 'DELETE',
-    headers: { Authorization: `Bearer ${token}` },
-  })
-
-  if (!response.ok) {
-    throw new Error("Impossible de supprimer l'utilisateur.")
-  }
+export function deleteAdminUser(id: number) {
+  return request(
+    `/admin/users/${id}`,
+    { method: 'DELETE', headers: authHeaders() },
+    "Impossible de supprimer l'utilisateur.",
+  )
 }
 
-export async function getInformations() {
-  const response = await fetch(`${API_URL}/informations`)
-
-  if (!response.ok) {
-    throw new Error('Impossible de charger les informations.')
-  }
-
-  return response.json()
+export function getInformations() {
+  return request(
+    '/informations',
+    {},
+    'Impossible de charger les informations.',
+  )
 }
 
-export async function createInformation(title: string, content: string) {
-  const token = localStorage.getItem('token')
-
-  const response = await fetch(`${API_URL}/admin/informations`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+export function createInformation(title: string, content: string) {
+  return request(
+    '/admin/informations',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify({ title, content }),
     },
-    body: JSON.stringify({ title, content }),
-  })
-
-  if (!response.ok) {
-    throw new Error("Impossible d'ajouter l'information.")
-  }
-
-  return response.json()
+    "Impossible d'ajouter l'information.",
+  )
 }
 
-export async function deleteInformation(id: number) {
-  const token = localStorage.getItem('token')
-
-  const response = await fetch(`${API_URL}/admin/informations/${id}`, {
-    method: 'DELETE',
-    headers: { Authorization: `Bearer ${token}` },
-  })
-
-  if (!response.ok) {
-    throw new Error("Impossible de supprimer l'information.")
-  }
-}
-
-export async function updateInformation(
-  id: number,
-  title: string,
-  content: string,
-) {
-  const token = localStorage.getItem('token')
-
-  const response = await fetch(`${API_URL}/admin/informations/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+export function updateInformation(id: number, title: string, content: string) {
+  return request(
+    `/admin/informations/${id}`,
+    {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', ...authHeaders() },
+      body: JSON.stringify({ title, content }),
     },
-    body: JSON.stringify({ title, content }),
-  })
+    "Impossible de modifier l'information.",
+  )
+}
 
-  if (!response.ok) {
-    throw new Error("Impossible de modifier l'information.")
-  }
-
-  return response.json()
+export function deleteInformation(id: number) {
+  return request(
+    `/admin/informations/${id}`,
+    { method: 'DELETE', headers: authHeaders() },
+    "Impossible de supprimer l'information.",
+  )
 }
