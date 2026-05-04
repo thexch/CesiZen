@@ -14,3 +14,9 @@ describe('Respiration', () => {
     expect(getSteps(rhythms[0]).map((step) => step.label)).toEqual(['Inspire', 'Apnée', 'Expire'])
   })
 })
+
+/*
+  Résumé du fichier :
+  - Sert à tester automatiquement la logique de respiration.
+  - Fonctionne avec Vitest en vérifiant le calcul du cycle et les rythmes de base.
+*/

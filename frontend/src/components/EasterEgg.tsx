@@ -205,3 +205,9 @@ function EasterEgg() {
 }
 
 export default EasterEgg
+
+/*
+  Résumé du fichier :
+  - Sert à gérer les animations secrètes du footer.
+  - Fonctionne avec un état activeEffect et Framer Motion pour afficher l'animation choisie.
+*/

@@ -15,3 +15,9 @@ createRoot(document.getElementById('root')!).render(
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   navigator.serviceWorker.register('/sw.js')
 }
+
+/*
+  Résumé du fichier :
+  - Sert à démarrer l'application React dans la page HTML.
+  - Fonctionne en plaçant App dans BrowserRouter pour activer la navigation par routes.
+*/

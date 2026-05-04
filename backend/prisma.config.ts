@@ -12,3 +12,9 @@ export default defineConfig({
     url: process.env["DATABASE_URL"],
   },
 });
+
+/*
+  Résumé du fichier :
+  - Sert à configurer Prisma côté backend.
+  - Fonctionne en indiquant le schéma, le dossier des migrations et l'URL de base de données.
+*/

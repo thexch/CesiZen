@@ -29,3 +29,7 @@ model Information {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// Résumé du fichier :
+// - Sert à décrire la structure de la base de données.
+// - Fonctionne avec Prisma pour générer le client et créer les migrations SQL.

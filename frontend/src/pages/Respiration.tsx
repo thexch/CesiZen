@@ -223,3 +223,9 @@ function Respiration() {
 }
 
 export default Respiration
+
+/*
+  Résumé du fichier :
+  - Sert à gérer l'exercice de respiration guidée.
+  - Fonctionne avec des états React pour le rythme, le timer, les phases et le démarrage.
+*/

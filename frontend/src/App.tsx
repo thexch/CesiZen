@@ -41,3 +41,9 @@ function App() {
 }
 
 export default App
+
+/*
+  Résumé du fichier :
+  - Sert à déclarer toutes les pages accessibles dans l'application.
+  - Fonctionne avec React Router : chaque URL affiche le composant de page associé.
+*/

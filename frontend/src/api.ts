@@ -164,3 +164,9 @@ export function deleteInformation(id: number) {
     "Impossible de supprimer l'information.",
   )
 }
+
+/*
+  Résumé du fichier :
+  - Sert à centraliser tous les appels entre le frontend et le backend.
+  - Fonctionne avec fetch, le token stocké dans localStorage et des fonctions simples par action.
+*/

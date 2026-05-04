@@ -76,3 +76,9 @@ select:focus-visible {
   outline: 3px solid rgba(20, 191, 106, 0.25);
   outline-offset: 2px;
 }
+
+/*
+  Résumé du fichier :
+  - Sert à définir les styles globaux de l'application.
+  - Fonctionne avec des variables CSS, des règles de base et les styles de focus.
+*/

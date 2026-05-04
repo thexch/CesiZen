@@ -30,3 +30,9 @@ function PolitiqueConfidentialite() {
 }
 
 export default PolitiqueConfidentialite
+
+/*
+  Résumé du fichier :
+  - Sert à afficher la politique de confidentialité.
+  - Fonctionne comme une page statique informative reliée au footer.
+*/

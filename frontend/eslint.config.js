@@ -20,3 +20,9 @@ export default defineConfig([
     },
   },
 ])
+
+/*
+  Résumé du fichier :
+  - Sert à configurer ESLint pour le frontend.
+  - Fonctionne en appliquant les règles TypeScript, React Hooks et React Refresh.
+*/

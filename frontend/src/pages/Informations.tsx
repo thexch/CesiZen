@@ -140,3 +140,9 @@ function Informations() {
 }
 
 export default Informations
+
+/*
+  Résumé du fichier :
+  - Sert à afficher les articles/informations publiés.
+  - Fonctionne en récupérant les données via l'API et en ouvrant un article dans une modal animée.
+*/

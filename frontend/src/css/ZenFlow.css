@@ -11,3 +11,9 @@
   height: 100%;
   opacity: 0.24;
 }
+
+/*
+  Résumé du fichier :
+  - Sert à placer le fond animé zen.
+  - Fonctionne avec un SVG en position absolue derrière le contenu.
+*/

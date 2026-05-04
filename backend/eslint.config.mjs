@@ -32,3 +32,9 @@ export default tseslint.config(
     },
   },
 );
+
+/*
+  Résumé du fichier :
+  - Sert à configurer ESLint pour le backend.
+  - Fonctionne avec les règles TypeScript, Prettier et l'environnement Node.
+*/

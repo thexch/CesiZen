@@ -12,3 +12,9 @@ export class InformationsController {
     });
   }
 }
+
+/*
+  Résumé du fichier :
+  - Sert à fournir les informations publiques au frontend.
+  - Fonctionne en récupérant les articles en base avec Prisma, du plus récent au plus ancien.
+*/

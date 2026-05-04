@@ -51,3 +51,9 @@ function CustomCursor() {
 }
 
 export default CustomCursor
+
+/*
+  Résumé du fichier :
+  - Sert à remplacer le curseur classique par un curseur animé personnalisé.
+  - Fonctionne en suivant la position de la souris et en détectant les éléments cliquables.
+*/

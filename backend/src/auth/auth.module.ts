@@ -16,3 +16,9 @@ import { AuthService } from './auth.service';
   exports: [AuthService],
 })
 export class AuthModule {}
+
+/*
+  Résumé du fichier :
+  - Sert à organiser la partie authentification.
+  - Fonctionne en déclarant AuthController et AuthService dans un module NestJS.
+*/

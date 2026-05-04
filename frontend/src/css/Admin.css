@@ -450,3 +450,9 @@
     grid-template-columns: 1fr;
   }
 }
+
+/*
+  Résumé du fichier :
+  - Sert à styliser la page d'administration.
+  - Fonctionne avec les onglets, tableaux, formulaires et animations d'ajout/suppression.
+*/

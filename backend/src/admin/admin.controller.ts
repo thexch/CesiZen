@@ -111,3 +111,9 @@ export class AdminController {
     });
   }
 }
+
+/*
+  Résumé du fichier :
+  - Sert à définir les routes réservées aux administrateurs.
+  - Fonctionne en vérifiant le rôle admin avant de gérer utilisateurs et informations.
+*/

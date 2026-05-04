@@ -17,3 +17,9 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     await this.$connect();
   }
 }
+
+/*
+  Résumé du fichier :
+  - Sert à communiquer avec la base de données PostgreSQL.
+  - Fonctionne avec PrismaClient et l'adaptateur PostgreSQL configuré par DATABASE_URL.
+*/

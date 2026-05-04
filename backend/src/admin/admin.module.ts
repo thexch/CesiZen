@@ -7,3 +7,9 @@ import { AdminController } from './admin.controller';
   controllers: [AdminController],
 })
 export class AdminModule {}
+
+/*
+  Résumé du fichier :
+  - Sert à organiser la partie administration.
+  - Fonctionne en reliant AdminController aux services nécessaires.
+*/

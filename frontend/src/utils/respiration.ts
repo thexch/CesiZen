@@ -75,3 +75,9 @@ export function getSteps(rhythm: Rhythm) {
 
   return steps
 }
+
+/*
+  Résumé du fichier :
+  - Sert à stocker les rythmes de respiration et les étapes de l'exercice.
+  - Fonctionne avec des objets Rhythm utilisés ensuite par la page Respiration.
+*/

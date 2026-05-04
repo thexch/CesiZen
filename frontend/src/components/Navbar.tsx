@@ -69,3 +69,9 @@ function Navbar() {
 }
 
 export default Navbar
+
+/*
+  Résumé du fichier :
+  - Sert à afficher la barre de navigation du site.
+  - Fonctionne en lisant la session locale pour adapter les liens visibles selon le rôle.
+*/

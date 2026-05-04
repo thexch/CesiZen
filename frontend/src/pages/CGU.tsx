@@ -31,3 +31,9 @@ function CGU() {
 }
 
 export default CGU
+
+/*
+  Résumé du fichier :
+  - Sert à afficher les conditions générales d'utilisation.
+  - Fonctionne comme une page statique reliée au footer.
+*/

@@ -14,3 +14,9 @@ function NotFound() {
 }
 
 export default NotFound
+
+/*
+  Résumé du fichier :
+  - Sert à afficher une page quand l'URL n'existe pas.
+  - Fonctionne avec la route "*" déclarée dans App.tsx.
+*/

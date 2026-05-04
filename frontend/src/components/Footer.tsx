@@ -36,3 +36,9 @@ function Footer() {
 }
 
 export default Footer
+
+/*
+  Résumé du fichier :
+  - Sert à afficher le bas de page avec les liens secondaires.
+  - Fonctionne avec React Router pour naviguer et avec EasterEgg pour les boutons secrets.
+*/

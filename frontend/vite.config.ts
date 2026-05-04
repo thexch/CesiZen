@@ -5,3 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
 })
+
+/*
+  Résumé du fichier :
+  - Sert à configurer Vite pour le frontend.
+  - Fonctionne en activant le plugin React utilisé pendant le développement et le build.
+*/

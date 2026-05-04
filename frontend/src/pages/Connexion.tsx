@@ -110,3 +110,9 @@ function Connexion() {
 }
 
 export default Connexion
+
+/*
+  Résumé du fichier :
+  - Sert à connecter ou inscrire un utilisateur.
+  - Fonctionne avec un formulaire, un mode connexion/inscription et le stockage du token après réussite.
+*/

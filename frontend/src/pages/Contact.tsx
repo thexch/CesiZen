@@ -28,3 +28,9 @@ function Contact() {
 }
 
 export default Contact
+
+/*
+  Résumé du fichier :
+  - Sert à afficher une page de contact factice.
+  - Fonctionne comme une page statique avec les informations de contact du projet.
+*/

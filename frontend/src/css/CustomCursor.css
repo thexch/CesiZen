@@ -51,3 +51,9 @@
     display: block;
   }
 }
+
+/*
+  Résumé du fichier :
+  - Sert à styliser le curseur personnalisé.
+  - Fonctionne avec un point et un halo affichés uniquement sur les appareils avec souris.
+*/

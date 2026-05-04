@@ -307,3 +307,9 @@ function Admin() {
 }
 
 export default Admin
+
+/*
+  Résumé du fichier :
+  - Sert à gérer l'administration du site.
+  - Fonctionne avec deux onglets : gestion des utilisateurs et gestion des informations.
+*/

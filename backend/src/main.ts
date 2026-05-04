@@ -17,3 +17,9 @@ async function bootstrap() {
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
+
+/*
+  Résumé du fichier :
+  - Sert à démarrer le serveur NestJS.
+  - Fonctionne en créant l'application à partir de AppModule puis en écoutant le port configuré.
+*/

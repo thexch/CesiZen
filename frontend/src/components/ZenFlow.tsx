@@ -44,3 +44,9 @@ function ZenFlow() {
 }
 
 export default ZenFlow
+
+/*
+  Résumé du fichier :
+  - Sert à afficher le fond animé zen du site.
+  - Fonctionne avec des formes SVG animées par Framer Motion.
+*/

@@ -150,3 +150,9 @@ export class AuthService {
     }
   }
 }
+
+/*
+  Résumé du fichier :
+  - Sert à gérer la logique métier de l'authentification.
+  - Fonctionne avec Prisma, JWT et bcrypt pour inscrire, connecter et vérifier les utilisateurs.
+*/

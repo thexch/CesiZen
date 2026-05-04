@@ -51,3 +51,9 @@ export class AuthController {
     return this.authService.deleteMe(authorization, body.password);
   }
 }
+
+/*
+  Résumé du fichier :
+  - Sert à définir les routes d'authentification.
+  - Fonctionne en recevant les requêtes HTTP puis en appelant AuthService.
+*/

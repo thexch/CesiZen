@@ -9,3 +9,9 @@ describe('Mot de passe', () => {
     expect(await isPasswordValid(password, hashedPassword)).toBe(true);
   });
 });
+
+/*
+  Résumé du fichier :
+  - Sert à tester le hash sécurisé des mots de passe.
+  - Fonctionne avec Jest en vérifiant qu'un mot de passe hashé est différent mais reste vérifiable.
+*/

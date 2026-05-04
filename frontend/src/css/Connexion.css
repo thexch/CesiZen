@@ -153,3 +153,9 @@
     grid-template-columns: 1fr;
   }
 }
+
+/*
+  Résumé du fichier :
+  - Sert à styliser la page connexion/inscription.
+  - Fonctionne avec une carte centrale, des onglets et des états responsive.
+*/

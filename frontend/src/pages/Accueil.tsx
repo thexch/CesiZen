@@ -90,3 +90,9 @@ function Accueil() {
 }
 
 export default Accueil
+
+/*
+  Résumé du fichier :
+  - Sert à afficher la page d'accueil de CESIZen.
+  - Fonctionne avec une présentation, un lien vers la respiration et des animations Framer Motion.
+*/

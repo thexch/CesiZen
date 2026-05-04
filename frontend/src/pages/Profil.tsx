@@ -147,3 +147,9 @@ function Profil() {
 }
 
 export default Profil
+
+/*
+  Résumé du fichier :
+  - Sert à afficher et modifier le profil connecté.
+  - Fonctionne avec l'API pour charger, mettre à jour, supprimer le compte ou se déconnecter.
+*/
