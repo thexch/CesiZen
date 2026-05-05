@@ -75,6 +75,22 @@
   background: var(--color-primary);
 }
 
+.admin-toast {
+  position: fixed;
+  top: 88px;
+  right: 24px;
+  z-index: 60;
+  max-width: min(360px, calc(100vw - 32px));
+  margin: 0;
+  padding: 10px 14px;
+  border: 1px solid rgba(20, 191, 106, 0.25);
+  border-radius: 8px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  box-shadow: var(--shadow-card);
+  font-weight: 800;
+}
+
 .admin-section {
   margin-bottom: 24px;
 }
@@ -448,6 +464,13 @@
 
   .admin-actions {
     grid-template-columns: 1fr;
+  }
+
+  .admin-toast {
+    top: 76px;
+    right: 16px;
+    left: 16px;
+    max-width: none;
   }
 }
 

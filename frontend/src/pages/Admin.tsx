@@ -39,12 +39,18 @@ function Admin() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [message, setMessage] = useState('Chargement...')
+  const [notice, setNotice] = useState('')
   const [isSendingInformation, setIsSendingInformation] = useState(false)
   const [deletingInformationId, setDeletingInformationId] = useState<number | null>(null)
 
   useEffect(() => {
     loadAdminPage()
   }, [])
+
+  function showNotice(text: string) {
+    setNotice(text)
+    setTimeout(() => setNotice(''), 2600)
+  }
 
   async function refreshUsers() {
     setUsers(await getAdminUsers())
@@ -71,6 +77,7 @@ function Admin() {
     setTitle('')
     setContent('')
     await refreshInformations()
+    showNotice('Information ajoutée avec succès.')
 
     setTimeout(() => setIsSendingInformation(false), 1200)
   }
@@ -85,15 +92,23 @@ function Admin() {
       String(formData.get('content')),
     )
     await refreshInformations()
+    showNotice('Information modifiée avec succès.')
   }
 
   function handleDeleteInformation(id: number) {
+    const confirmed = window.confirm('Voulez-vous vraiment supprimer cette information ?')
+
+    if (!confirmed) {
+      return
+    }
+
     setDeletingInformationId(id)
 
     setTimeout(async () => {
       await deleteInformation(id)
       await refreshInformations()
       setDeletingInformationId(null)
+      showNotice('Information supprimée avec succès.')
     }, 550)
   }
 
@@ -107,6 +122,7 @@ function Admin() {
       formData.get('isActive') === 'on',
     )
     await refreshUsers()
+    showNotice('Utilisateur modifié avec succès.')
   }
 
   return (
@@ -265,34 +281,34 @@ function Admin() {
                   ) : (
                     <AnimatePresence>
                       {informations.map((information) => (
-                      <motion.form
-                        className={`admin-information ${deletingInformationId === information.id ? 'is-deleting' : ''}`}
-                        key={information.id}
-                        layout
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={
-                          deletingInformationId === information.id
-                            ? { opacity: 0, x: 120, scale: 0.92, rotate: 2 }
-                            : { opacity: 1, x: 0, scale: 1, rotate: 0 }
-                        }
-                        exit={{ opacity: 0, height: 0, margin: 0 }}
-                        transition={{ duration: 0.35 }}
-                        onSubmit={(event) => handleUpdateInformation(event, information.id)}
-                      >
-                        <input name="title" defaultValue={information.title} required />
-                        <textarea name="content" defaultValue={information.content} required />
-                        <div className="admin-actions">
-                          <button type="submit">Modifier</button>
-                          <button
-                            type="button"
-                            className="danger-button"
-                            disabled={deletingInformationId === information.id}
-                            onClick={() => handleDeleteInformation(information.id)}
-                          >
-                            {deletingInformationId === information.id ? 'Suppression...' : 'Supprimer'}
-                          </button>
-                        </div>
-                      </motion.form>
+                        <motion.form
+                          className={`admin-information ${deletingInformationId === information.id ? 'is-deleting' : ''}`}
+                          key={information.id}
+                          layout
+                          initial={{ opacity: 0, y: 12 }}
+                          animate={
+                            deletingInformationId === information.id
+                              ? { opacity: 0, x: 120, scale: 0.92, rotate: 2 }
+                              : { opacity: 1, x: 0, scale: 1, rotate: 0 }
+                          }
+                          exit={{ opacity: 0, height: 0, margin: 0 }}
+                          transition={{ duration: 0.35 }}
+                          onSubmit={(event) => handleUpdateInformation(event, information.id)}
+                        >
+                          <input name="title" defaultValue={information.title} required />
+                          <textarea name="content" defaultValue={information.content} required />
+                          <div className="admin-actions">
+                            <button type="submit">Modifier</button>
+                            <button
+                              type="button"
+                              className="danger-button"
+                              disabled={deletingInformationId === information.id}
+                              onClick={() => handleDeleteInformation(information.id)}
+                            >
+                              {deletingInformationId === information.id ? 'Suppression...' : 'Supprimer'}
+                            </button>
+                          </div>
+                        </motion.form>
                       ))}
                     </AnimatePresence>
                   )}
@@ -302,6 +318,19 @@ function Admin() {
           </AnimatePresence>
         </>
       )}
+
+      <AnimatePresence>
+        {notice && (
+          <motion.p
+            className="admin-toast"
+            initial={{ opacity: 0, y: -16, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -16, scale: 0.96 }}
+          >
+            {notice}
+          </motion.p>
+        )}
+      </AnimatePresence>
     </main>
   )
 }
