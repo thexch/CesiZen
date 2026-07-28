@@ -16,6 +16,7 @@ function Footer() {
         <div>
           <strong>CESIZen</strong>
           <p>Respiration guidée et prévention du stress.</p>
+          <p className="text-sm opacity-70">Version 1.0.0</p>
         </div>
       </div>
 
